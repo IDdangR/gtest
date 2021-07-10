@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.ntest.adapter.ApiRepositoryAdapter
 import com.example.ntest.model.Ndata1
+import com.example.ntest.model.Ndata2
+import com.example.ntest.model.Ndata2s
 import com.example.ntest.model.Ndatas
 import com.example.ntest.netservice.ApiRepository
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,7 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mAdapter: ApiRepositoryAdapter
 
     private var page = 1
-    private var listData = ArrayList<Ndata1>()
+    private var listData = arrayListOf<Any>()
+    private var reData: Ndata2s? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +38,13 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.nData.observe(this) {
             updateData(it)
+
             mAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.nData2.observe(this) {
+            reData = it
+
         }
 
         viewModel.requestApi(page)
@@ -46,19 +55,24 @@ class MainActivity : AppCompatActivity() {
             listData.add(temp)
         }
 
-        if(::mAdapter.isInitialized){
+        if(listData.size < 30){
+            reData?.recommend1?.let { listData.add(10, it) }
+            reData?.recommend2?.let { listData.add(it) }
+        }else if(listData.size < 50)  reData?.recommend3?.let { listData.add(32, it) }
 
+
+        if(::mAdapter.isInitialized){
         } else {
-            mAdapter =  ApiRepositoryAdapter(listData).apply {
+            mAdapter = ApiRepositoryAdapter(listData).apply {
                 listener = object : ApiRepositoryAdapter.onClickListener {
                     override fun onItemClick(position: Int) {
                         Intent(this@MainActivity, DetailActivity::class.java).let {
-                            it.putExtra("product", listData[position])
+                            it.putExtra("product", listData[position] as Ndata1)
                             startActivity(it)
                         }
                     }
                 }
-            }
+            }!!
 
             list.run {
                 setHasFixedSize(true)

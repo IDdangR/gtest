@@ -79,4 +79,15 @@ data class Ndata2(
     @SerializedName("imageUrl")
     val imageUrl: String?,
 
+): Serializable
+
+data class Ndata2s(
+    @SerializedName("recommend1")
+    val recommend1: List<Ndata2>?,
+
+    @SerializedName("recommend2")
+    val recommend2: List<Ndata2>?,
+
+    @SerializedName("recommend3")
+    val recommend3: List<Ndata2>?,
 )
