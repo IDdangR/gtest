@@ -1,6 +1,7 @@
 package com.example.ntest.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Ndatas (
     @SerializedName("products")
@@ -48,7 +49,7 @@ data class Ndata1 (
     @SerializedName("brand")
     val brand: Brand?,
 
-)
+):Serializable
 
 data class Brand(
     @SerializedName("idBrand")
@@ -60,7 +61,7 @@ data class Brand(
     @SerializedName("imageUrl")
     val imageUrl: String?,
 
-)
+):Serializable
 
 data class Ndata2(
     @SerializedName("idProduct")

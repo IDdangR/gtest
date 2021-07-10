@@ -1,5 +1,6 @@
 package com.example.ntest
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -38,10 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.requestApi(page)
-
-        back.setOnClickListener {
-            finish()
-        }
     }
 
     private fun updateData(data: Ndatas) {
@@ -55,7 +52,10 @@ class MainActivity : AppCompatActivity() {
             mAdapter =  ApiRepositoryAdapter(listData).apply {
                 listener = object : ApiRepositoryAdapter.onClickListener {
                     override fun onItemClick(position: Int) {
-                        Toast.makeText(this@MainActivity, "ddd", Toast.LENGTH_SHORT).show()
+                        Intent(this@MainActivity, DetailActivity::class.java).let {
+                            it.putExtra("product", listData[position])
+                            startActivity(it)
+                        }
                     }
                 }
             }
